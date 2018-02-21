@@ -244,7 +244,7 @@ void Matrix::writeToBinary(std::string dateiname)
 
 std::ostream& operator<<(std::ostream& os, const Matrix& matrix)
 {
-    os << matrix.m_reihen << "x" << matrix.m_spalten << " - Matrix\n\n";
+    os << matrix.m_reihen << "x" << matrix.m_spalten << " - Matrix\n";
     for (int i = 0; i < matrix.get_reihen(); ++i){
         for (int j = 0; j < matrix.get_spalten(); ++j)
         {

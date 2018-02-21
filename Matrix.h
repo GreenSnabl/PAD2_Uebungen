@@ -44,9 +44,6 @@ public:
     void readFromBinary(std::string);
     void writeToBinary(std::string);
     
-    void readMatrixFromFile(std::string filename, Filetype filetype);
-    void saveMatrixToFile(std::string filename, Filetype filetype);    
-    
     const int get_reihen() const;
     const int get_spalten() const;
     

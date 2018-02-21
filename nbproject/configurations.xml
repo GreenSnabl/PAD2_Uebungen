@@ -21,6 +21,14 @@
                    displayName="Test Files"
                    projectFiles="false"
                    kind="TEST_LOGICAL_FOLDER">
+      <logicalFolder name="f1"
+                     displayName="MatrixTest1"
+                     projectFiles="true"
+                     kind="TEST">
+        <itemPath>tests/MatrixTest.cpp</itemPath>
+        <itemPath>tests/MatrixTest.h</itemPath>
+        <itemPath>tests/MatrixTestRunner.cpp</itemPath>
+      </logicalFolder>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -48,7 +56,27 @@
       </item>
       <item path="Matrix.h" ex="false" tool="3" flavor2="0">
       </item>
+      <folder path="TestFiles/f1">
+        <cTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </cTool>
+        <ccTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f1</output>
+          <linkerLibItems>
+            <linkerOptionItem>`cppunit-config --libs`</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tests/MatrixTest.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tests/MatrixTest.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="tests/MatrixTestRunner.cpp" ex="false" tool="1" flavor2="0">
       </item>
     </conf>
     <conf name="Release" type="1">
@@ -78,7 +106,27 @@
       </item>
       <item path="Matrix.h" ex="false" tool="3" flavor2="0">
       </item>
+      <folder path="TestFiles/f1">
+        <cTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </cTool>
+        <ccTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f1</output>
+          <linkerLibItems>
+            <linkerOptionItem>`cppunit-config --libs`</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tests/MatrixTest.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tests/MatrixTest.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="tests/MatrixTestRunner.cpp" ex="false" tool="1" flavor2="0">
       </item>
     </conf>
   </confs>

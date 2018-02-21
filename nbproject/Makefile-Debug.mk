@@ -39,6 +39,17 @@ OBJECTFILES= \
 	${OBJECTDIR}/Matrix.o \
 	${OBJECTDIR}/main.o
 
+# Test Directory
+TESTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}/tests
+
+# Test Files
+TESTFILES= \
+	${TESTDIR}/TestFiles/f1
+
+# Test Object Files
+TESTOBJECTFILES= \
+	${TESTDIR}/tests/MatrixTest.o \
+	${TESTDIR}/tests/MatrixTestRunner.o
 
 # C Compiler Flags
 CFLAGS=
@@ -81,6 +92,75 @@ ${OBJECTDIR}/main.o: main.cpp
 
 # Subprojects
 .build-subprojects:
+
+# Build Test Targets
+.build-tests-conf: .build-tests-subprojects .build-conf ${TESTFILES}
+.build-tests-subprojects:
+
+${TESTDIR}/TestFiles/f1: ${TESTDIR}/tests/MatrixTest.o ${TESTDIR}/tests/MatrixTestRunner.o ${OBJECTFILES:%.o=%_nomain.o}
+	${MKDIR} -p ${TESTDIR}/TestFiles
+	${LINK.cc} -o ${TESTDIR}/TestFiles/f1 $^ ${LDLIBSOPTIONS}   `cppunit-config --libs`   
+
+
+${TESTDIR}/tests/MatrixTest.o: tests/MatrixTest.cpp 
+	${MKDIR} -p ${TESTDIR}/tests
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -std=c++14 `cppunit-config --cflags` -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/MatrixTest.o tests/MatrixTest.cpp
+
+
+${TESTDIR}/tests/MatrixTestRunner.o: tests/MatrixTestRunner.cpp 
+	${MKDIR} -p ${TESTDIR}/tests
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -std=c++14 `cppunit-config --cflags` -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/MatrixTestRunner.o tests/MatrixTestRunner.cpp
+
+
+${OBJECTDIR}/Filestreamtests_nomain.o: ${OBJECTDIR}/Filestreamtests.o Filestreamtests.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/Filestreamtests.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -std=c++14 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Filestreamtests_nomain.o Filestreamtests.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/Filestreamtests.o ${OBJECTDIR}/Filestreamtests_nomain.o;\
+	fi
+
+${OBJECTDIR}/Matrix_nomain.o: ${OBJECTDIR}/Matrix.o Matrix.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/Matrix.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -std=c++14 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Matrix_nomain.o Matrix.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/Matrix.o ${OBJECTDIR}/Matrix_nomain.o;\
+	fi
+
+${OBJECTDIR}/main_nomain.o: ${OBJECTDIR}/main.o main.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/main.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -std=c++14 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main_nomain.o main.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/main.o ${OBJECTDIR}/main_nomain.o;\
+	fi
+
+# Run Test Targets
+.test-conf:
+	@if [ "${TEST}" = "" ]; \
+	then  \
+	    ${TESTDIR}/TestFiles/f1 || true; \
+	else  \
+	    ./${TEST} || true; \
+	fi
 
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}

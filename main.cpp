@@ -37,6 +37,7 @@ int main(int argc, char** argv) {
     ofstream ofs("matrix02.txt");
     ofs << m1;
     ofs.close();
+    m1.writeToBinary("bin1.save");
     Matrix m2("matrix03.txt", ascii);
     
     
@@ -52,13 +53,15 @@ int main(int argc, char** argv) {
     cout << m3;
     cout << m4;
     
-    m3.writeToBinary("bin1.save");
-    m4.writeToBinary("bin2.save");
-    Matrix m5("bin1.save", binary);
-    Matrix m6("bin2.save", binary);
+    m3.writeToBinary("bin2.save");
+    m4.writeToBinary("bin3.save");
+    Matrix m5("bin2.save", binary);
+    Matrix m6("bin3.save", binary);
     cout << m5;
     cout << m6;
     
+    Matrix m7(5,4,5);
+    m7.writeToBinary("bin4.save");
     
     
     return 0;
