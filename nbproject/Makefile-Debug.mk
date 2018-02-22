@@ -37,6 +37,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/Filestreamtests.o \
 	${OBJECTDIR}/Matrix.o \
+	${OBJECTDIR}/MatrixExceptions.o \
 	${OBJECTDIR}/main.o
 
 # Test Directory
@@ -84,6 +85,11 @@ ${OBJECTDIR}/Matrix.o: Matrix.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Matrix.o Matrix.cpp
+
+${OBJECTDIR}/MatrixExceptions.o: MatrixExceptions.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/MatrixExceptions.o MatrixExceptions.cpp
 
 ${OBJECTDIR}/main.o: main.cpp
 	${MKDIR} -p ${OBJECTDIR}
@@ -138,6 +144,19 @@ ${OBJECTDIR}/Matrix_nomain.o: ${OBJECTDIR}/Matrix.o Matrix.cpp
 	    $(COMPILE.cc) -g -std=c++14 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Matrix_nomain.o Matrix.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/Matrix.o ${OBJECTDIR}/Matrix_nomain.o;\
+	fi
+
+${OBJECTDIR}/MatrixExceptions_nomain.o: ${OBJECTDIR}/MatrixExceptions.o MatrixExceptions.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/MatrixExceptions.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -std=c++14 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/MatrixExceptions_nomain.o MatrixExceptions.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/MatrixExceptions.o ${OBJECTDIR}/MatrixExceptions_nomain.o;\
 	fi
 
 ${OBJECTDIR}/main_nomain.o: ${OBJECTDIR}/main.o main.cpp 

@@ -12,6 +12,7 @@
  */
 
 #include "Matrix.h"
+#include "MatrixExceptions.h"
 #include <iostream>
 #include <fstream>
 #include <iomanip>
@@ -25,45 +26,28 @@ using namespace std;
 
 int main(int argc, char** argv) {
    
+    Matrix m1(2,3,4);
+    Matrix m2(3,5,3);
+    Matrix m3(4,3,3);
+    Matrix m;
+    try{
+        
+        m3 = m1 * m2;
+        m.at(23,23);
+        m2.at(45,45);
+    } catch (logic_error& l)
+    {
+        cout << l.what() << endl;
+    } catch(MatrixOutOfRange& m)
+    {
+        cout << m.what() << endl;
+    } catch (MatrixUninitialized& i)
+    {
+        cout << i.what() << endl;
+    }
     
- /*
-    cout << m2;
-    ifstream infile("matrix01.txt");
-    if(infile.good()) infile >> m2;
-    cout << m2;
-   */ 
-    
-    Matrix m1("matrix01.txt", ascii);
-    ofstream ofs("matrix02.txt");
-    ofs << m1;
-    ofs.close();
-    m1.writeToBinary("bin1.save");
-    Matrix m2("matrix03.txt", ascii);
-    
-    
-    cout << m1;
-    cout << m2;
-    
-    Matrix m3 = m1 * m2;
-    Matrix m4 = m2 * m1;
-    
-    m3.print();
-    m4.print();
     
     cout << m3;
-    cout << m4;
-    
-    m3.writeToBinary("bin2.save");
-    m4.writeToBinary("bin3.save");
-    Matrix m5("bin2.save", binary);
-    Matrix m6("bin3.save", binary);
-    cout << m5;
-    cout << m6;
-    
-    Matrix m7(5,4,5);
-    m7.writeToBinary("bin4.save");
-    
-    
     return 0;
 }
 

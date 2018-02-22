@@ -16,9 +16,13 @@
 #include <iomanip>
 #include <fstream>
 #include <algorithm>
+#include "MatrixExceptions.h"
 
 using std::cout;
 using std::endl;
+
+
+
 
 Matrix::Matrix() : m_reihen{0}, m_spalten{0}, m_data{nullptr}
 {
@@ -73,10 +77,14 @@ Matrix::~Matrix() {
 }
 
 double& Matrix::at(int reihe, int spalte) {
+    if(m_data == nullptr) throw MatrixUninitialized();
+    if (reihe >= m_reihen || spalte >= m_spalten) throw MatrixOutOfRange();
     return m_data[reihe][spalte];
 }
 
 const double Matrix::at(int reihe, int spalte) const {
+    if(m_data == nullptr) throw MatrixUninitialized();
+    if (reihe >= m_reihen || spalte >= m_spalten) throw MatrixOutOfRange();
     return m_data[reihe][spalte];
 }
 
@@ -106,8 +114,7 @@ const bool Matrix::operator==(const Matrix& matrix) const {
 }
 
 Matrix Matrix::operator+(const Matrix& matrix) const {
-    if (!same_size(matrix)) {
-        return Matrix(*this);
+    if (!same_size(matrix)) { throw std::logic_error("Addition nicht möglich: Matrizen besitzen unterschiedliche Größe.\n");//return Matrix(*this);
     }
     Matrix temp(*this);
     for (int i = 0; i < temp.get_reihen(); ++i)
@@ -118,8 +125,7 @@ Matrix Matrix::operator+(const Matrix& matrix) const {
 }
 
 Matrix Matrix::operator-(const Matrix& matrix) const {
-    if (!same_size(matrix)) {
-        return Matrix(*this);
+    if (!same_size(matrix)) { throw std::logic_error("Subtraktion nicht möglich: Matrizen besitzen unterschiedliche Größe.\n");// return Matrix(*this);
     }
     Matrix temp(*this);
     for (int i = 0; i < temp.get_reihen(); ++i)
@@ -131,9 +137,7 @@ Matrix Matrix::operator-(const Matrix& matrix) const {
 
 Matrix Matrix::operator*(const Matrix& matrix) const
 {
-    if (!(this->get_spalten() == matrix.get_reihen()) || this->get_spalten() == 0) {
-        return Matrix(*this);
-    }
+    if (!(this->get_spalten() == matrix.get_reihen()) || this->get_spalten() == 0) throw std::logic_error("Multiplikation nicht möglich: Ungleiche Spalten- und Reihengröße\n");// {return Matrix(*this);}
     Matrix temp(this->get_reihen(), matrix.get_spalten(), 0);
     for(int i = 0; i < this->get_reihen(); ++i){
         for(int j = 0; j < matrix.get_spalten(); ++j){
@@ -147,8 +151,7 @@ Matrix Matrix::operator*(const Matrix& matrix) const
 }
 
 Matrix& Matrix::operator+=(const Matrix& matrix) {
-    if (!same_size(matrix)) {
-        return *this;
+    if (!same_size(matrix)) { throw std::logic_error("Addition nicht möglich: Matrizen besitzen unterschiedliche Größe.\n");// return *this;
     }
     for (int i = 0; i < get_reihen(); ++i)
         for (int j = 0; j < get_spalten(); ++j) {
@@ -158,8 +161,7 @@ Matrix& Matrix::operator+=(const Matrix& matrix) {
 }
 
 Matrix& Matrix::operator-=(const Matrix& matrix) {
-    if (!same_size(matrix)) {
-        return *this;
+    if (!same_size(matrix)) { throw std::logic_error("Subtraktion nicht möglich: Matrizen besitzen unterschiedliche Größe.\n");//  return *this;
     }
     for (int i = 0; i < get_reihen(); ++i)
         for (int j = 0; j < get_spalten(); ++j) {
@@ -199,16 +201,21 @@ Matrix& Matrix::operator=(const Matrix& matrix) {
 }
 
 double& Matrix::operator()(int reihe, int spalte) {
+    if(m_data == nullptr) throw MatrixUninitialized();
+    if (reihe >= m_reihen || spalte >= m_spalten) throw MatrixOutOfRange();
     return m_data[reihe][spalte];
 }
 
 const double Matrix::operator()(int reihe, int spalte) const {
+    if(m_data == nullptr) throw MatrixUninitialized();
+    if (reihe >= m_reihen || spalte >= m_spalten) throw MatrixOutOfRange();
     return m_data[reihe][spalte];
 }
 
 void Matrix::readFromBinary(std::string dateiname)
 {
     std::ifstream binary(dateiname, std::ios::binary);
+    if(!binary.good()) throw std::ios_base::failure("Datei konnte nicht geöffnet werden: Dateiname ungültig\n");
     
     if(m_data != nullptr){
     for(int i = 0; i < get_reihen(); ++i){

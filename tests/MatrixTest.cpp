@@ -13,6 +13,7 @@
 
 #include "MatrixTest.h"
 #include "../Matrix.h"
+#include "../MatrixExceptions.h"
 
 
 CPPUNIT_TEST_SUITE_REGISTRATION(MatrixTest);
@@ -121,6 +122,7 @@ void MatrixTest::testReadFromBinary() {
         for (int j = 0; j < 4; ++j) {
             CPPUNIT_ASSERT(matrix.at(i, j) == 5);
         }
+    CPPUNIT_ASSERT_THROW(matrix.readFromBinary("ungueltiger_Dateiname.nope"), std::ios_base::failure);
 }
 
 void MatrixTest::testWriteToBinary() {
@@ -135,6 +137,8 @@ void MatrixTest::testGet_spalten() {
 }
 
 void MatrixTest::testAt() {
+    CPPUNIT_ASSERT_THROW(m1->at(1,1), MatrixUninitialized);
+    CPPUNIT_ASSERT_THROW(m3->at(54,54), MatrixOutOfRange);
     Matrix matrix(2, 2, 2);
     for (int i = 0; i < 2; ++i)
         for (int j = 0; j < 2; ++j)
@@ -145,6 +149,8 @@ void MatrixTest::testAt() {
 }
 
 void MatrixTest::testAt2() {
+    CPPUNIT_ASSERT_THROW(m1->at(1,1), MatrixUninitialized);
+    CPPUNIT_ASSERT_THROW(m3->at(54,54), MatrixOutOfRange);
     for (int i = 0; i < m3->get_reihen(); ++i)
         for (int j = 0; j < m3->get_spalten(); ++j)
             CPPUNIT_ASSERT(m3->at(i, j) == 5);
